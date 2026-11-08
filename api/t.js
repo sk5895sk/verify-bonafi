@@ -18,10 +18,9 @@ const crypto = require("crypto");
 // ---------------------------------------------------------------------------
 // Registry: tag UID (from TagWriter "Read") → artwork serial
 // ---------------------------------------------------------------------------
-const TAGS = {
-  // "04A1B2C3D4E5F6": "MADS-ASH-2026-0001",   // ← replace with your tag's UID
-};
-
+   const TAGS = {
+     "04DE5F1EACC040": "MADS-ASH-2026-0001",   // TEMPORARY test
+   };
 const ARTWORKS = {
   "MADS-ASH-2026-0001": {
     title: "Conception Dream",
