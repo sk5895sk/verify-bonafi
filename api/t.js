@@ -19,20 +19,20 @@ const crypto = require("crypto");
 // Registry: tag UID (from TagWriter "Read") → artwork serial
 // ---------------------------------------------------------------------------
    const TAGS = {
-     "04DE5F1EACC040": "MADS-ASH-2026-0001",   // TEMPORARY test
+ 
    };
 const ARTWORKS = {
   "MADS-ASH-2026-0001": {
-    title: "Conception Dream",
+    title: "How Dreams Are Born",
     artist: "Aaron Shim",
     location: "Los Angeles",
-    year: "2026 (to be confirmed)",
-    medium: "To be confirmed",
-    dimensions: "To be confirmed",
+    year: "2024",
+    medium: "Acrylic",
+    dimensions: "6 x 12 in",
     gallery: "MADS, Los Angeles",
     galleryUrl: "https://www.mads.la/aaron-shim-(new)",
     registered: "November 7, 2026",
-    image: "", // e.g. "/images/MADS-ASH-2026-0001-front.jpg"
+    image: "https://verify.bonafi.io/a/MADS-ASH-2026-0001/ASH-How-Dreams-Are-Born.Acrylic.6-x12-.2024.jpg", // e.g. "/images/MADS-ASH-2026-0001-front.jpg"
   },
 };
 
