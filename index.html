@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bonafi Verify</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="wrap">
+    <div class="brand"><strong>Bonafi Verify</strong><span>Artwork authentication</span></div>
+    <section class="card">
+      <h1>Verify an artwork</h1>
+      <p class="artist">Tap the NFC tag or scan the QR code on the back of the artwork to see its certificate.</p>
+      <form onsubmit="event.preventDefault(); var s=document.getElementById('s').value.trim().toUpperCase(); if(s) location.href='/a/'+encodeURIComponent(s);">
+        <label for="s" class="note">Or enter the serial number</label>
+        <div style="display:flex;gap:8px;margin-top:6px">
+          <input id="s" placeholder="MADS-ASH-2026-0001" autocapitalize="characters"
+            style="flex:1;min-width:0;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit">
+          <button style="padding:12px 16px;border-radius:10px;border:0;background:var(--accent);color:var(--card);font:inherit;font-weight:600">Verify</button>
+        </div>
+      </form>
+    </section>
+    <footer>Bonafi, Inc. · Chatsworth, CA · <a href="https://www.bonafi.io">bonafi.io</a></footer>
+  </main>
+</body>
+</html>
