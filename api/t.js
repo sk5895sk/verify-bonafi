@@ -18,9 +18,10 @@ const crypto = require("crypto");
 // ---------------------------------------------------------------------------
 // Registry: tag UID (from TagWriter "Read") → artwork serial
 // ---------------------------------------------------------------------------
-   const TAGS = {
- 
-   };
+const TAGS = {
+  "04BE330ABD2390": "MADS-ASH-2026-0001",
+};
+
 const ARTWORKS = {
   "MADS-ASH-2026-0001": {
     title: "How Dreams Are Born",
@@ -28,11 +29,11 @@ const ARTWORKS = {
     location: "Los Angeles",
     year: "2024",
     medium: "Acrylic",
-    dimensions: "6 x 12 in",
+    dimensions: "6 × 12 in",
     gallery: "MADS, Los Angeles",
     galleryUrl: "https://www.mads.la/aaron-shim-(new)",
     registered: "November 7, 2026",
-    image: "https://verify.bonafi.io/a/MADS-ASH-2026-0001/ASH-How-Dreams-Are-Born.Acrylic.6-x12-.2024.jpg", // e.g. "/images/MADS-ASH-2026-0001-front.jpg"
+    image: "/a/MADS-ASH-2026-0001/ASH-How-Dreams-Are-Born.Acrylic.6-x12-.2024.jpg",
   },
 };
 
@@ -140,8 +141,14 @@ const COUNTER_SCRIPT =
   "if n>c then redis.call('SET',KEYS[1],ARGV[1]) return 1 else return 0 end";
 
 async function acceptCounter(uid, counter) {
-  const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+  // Accept the standard names, or any custom prefix chosen when connecting the store (e.g. STORAGE_REST_API_URL)
+  const env = process.env;
+  const findEnv = (suffix) => {
+    const k = Object.keys(env).find((n) => n.endsWith(suffix) && !n.includes("READ_ONLY"));
+    return k ? env[k] : undefined;
+  };
+  const url = env.KV_REST_API_URL || env.UPSTASH_REDIS_REST_URL || findEnv("_REST_API_URL");
+  const token = env.KV_REST_API_TOKEN || env.UPSTASH_REDIS_REST_TOKEN || findEnv("_REST_API_TOKEN");
   if (!url || !token) return "unavailable";
   const r = await fetch(url, {
     method: "POST",
@@ -173,9 +180,9 @@ function page({ tone, heading, message, serial, art, extra = "" }) {
         <p class="artist">${esc(art.artist)} · ${esc(art.location)}</p>
         <div class="photo">${
           art.image
-            ? `<img src="${esc(art.image)}" alt="${esc(art.title)} by ${esc(art.artist)}">`
+            ? `<a href="${esc(art.image)}"><img src="${esc(art.image)}" alt="${esc(art.title)} by ${esc(art.artist)}"></a>`
             : "Reference photo pending"
-        }</div>
+        }</div>${art.image ? `<p class="photo-hint">Tap the photo to view full size and zoom</p>` : ""}
         <dl>
           <dt>Year</dt><dd>${esc(art.year)}</dd>
           <dt>Medium</dt><dd>${esc(art.medium)}</dd>
