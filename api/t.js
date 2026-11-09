@@ -205,8 +205,11 @@ function page({ tone, heading, message, serial, art, extra = "" }) {
 <div><b>${esc(heading)}</b>${esc(message)}</div></div>
 ${extra}
 ${details}
-<section class="card"><h2>About this certificate</h2>
-<p class="note">This page confirms that the artwork above was registered with Bonafi Verify, by whom, and when. It is not an expert opinion on the work's authorship. Compare the physical artwork with the reference photos, and contact the gallery with any questions.</p></section>
+${art
+  ? `<section class="card"><h2>About this certificate</h2>
+<p class="note">This page confirms that the artwork above was registered with Bonafi Verify, by whom, and when. It is not an expert opinion on the work's authorship. Compare the physical artwork with the reference photos, and contact the gallery with any questions.</p></section>`
+  : `<section class="card"><h2>How verification works</h2>
+<p class="note">Artwork details are shown only after a fresh tap on the genuine Bonafi NFC tag. If you're considering buying this work, ask the seller to let you tap the tag yourself.</p></section>`}
 <footer>Bonafi, Inc. · Chatsworth, CA · <a href="https://www.bonafi.io">bonafi.io</a></footer>
 </main></body></html>`;
 }
@@ -263,10 +266,7 @@ async function handler(req, res) {
       page({
         tone: "warn",
         heading: "Link already used",
-        message: "This link was copied or reloaded. Tap the NFC tag on the artwork again to authenticate.",
-        serial,
-        art,
-        extra: testNote,
+        message: "This link has already been used, so it can't verify anything. Tap the NFC tag on the artwork itself to authenticate it.",
       })
     );
   }
@@ -275,11 +275,8 @@ async function handler(req, res) {
     return res.end(
       page({
         tone: "warn",
-        heading: "Signature valid — freshness unchecked",
-        message: "The tag's signature is genuine, but this server can't yet confirm the tap is new.",
-        serial,
-        art,
-        extra: testNote,
+        heading: "Verification incomplete",
+        message: "We couldn't finish checking this tap. Please tap the NFC tag again in a moment.",
       })
     );
   }
